@@ -89,6 +89,7 @@ import NavBar from "@/components/NavBar";
 import axios from "axios";
 import {mapActions, mapState} from "vuex";
 
+
 export default {
   name: "ManageTicketOut",
   data: function () {
@@ -122,7 +123,7 @@ export default {
           this.ticketData = res.data
         }
       } catch (err) {
-        alert(err.response.data)
+        alert(err)
       }
     },
     formatData() {

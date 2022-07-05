@@ -8,7 +8,15 @@
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
       <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Dữ liệu về thời gian làm việc và lương</h6>
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+          <h6 class="m-0 font-weight-bold text-primary">Dữ liệu lương nhân viên</h6>
+          <a v-on:click="getSalaryThisMonth" class="btn btn-primary btn-icon-split">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-flag"></i>
+                                        </span>
+            <span class="text">Tính lương nhân viên</span>
+          </a>
+        </div>
       </div>
       <div class="card-body">
         <div class="table-responsive">
@@ -16,7 +24,7 @@
             <div class="row">
               <div class="col-sm-12 col-md-6">
                 <div class="col-sm-12 col-md-6">
-                  <div class="dataTables_filter text-left" id="dataTable_month"><label>Lọc theo tháng:
+                  <div class="dataTables_filter text-left" id="dataTable_month"><label>Tra cứu theo tháng:
                     <input type="month"
                            v-model="month"
                            class="form-control form-control-sm"
@@ -27,16 +35,20 @@
                         style="margin-left: 2%"
                     >
                       <i class="fas fa-check"></i> </a
-                    ></label>
+                    >
+
+                  </label>
                   </div>
                 </div>
               </div>
               <div class="col-sm-12 col-md-6">
+
                 <div id="dataTable_filter" class="dataTables_filter"><label>Lọc theo tên:<input v-model="name"
                                                                                                 type="search"
                                                                                                 class="form-control form-control-sm"
                                                                                                 placeholder="Nhập tên nhân viên"
-                                                                                                aria-controls="dataTable"></label>
+                                                                                                aria-controls="dataTable">
+                </label>
                 </div>
               </div>
             </div>
@@ -48,9 +60,10 @@
                     <th>STT</th>
                     <th>Tên nhân viên</th>
                     <th>Tháng</th>
-                    <th>Thời gian làm việc</th>
-                    <th>Hệ số lương</th>
-                    <th>Lương(VND)</th>
+                    <th v-if="isCalculateSalary">Thời gian làm việc</th>
+                    <th v-if="isCalculateSalary">Hệ số lương</th>
+                    <th v-if="isCalculateSalary">Lương hiện tại(VND)</th>
+                    <th v-else>Lương(VND)</th>
                   </tr>
                   </thead>
 
@@ -59,8 +72,8 @@
                     <td>{{ index + 1 }}</td>
                     <td>{{ user.name }}</td>
                     <td>{{ user.month }} / {{ user.year }}</td>
-                    <td>{{ user.time }}</td>
-                    <td>{{ user.coefficients_salary }}</td>
+                    <td v-if="isCalculateSalary">{{ user.time }}</td>
+                    <td v-if="isCalculateSalary">{{ user.coefficients_salary }}</td>
                     <td>{{ user.salary }}</td>
                   </tr>
                   </tbody>
@@ -86,6 +99,7 @@ export default {
       month: "",
       name: "",
       salaryUser: [],
+      isCalculateSalary: false,
     }
   },
   props: {
@@ -118,14 +132,46 @@ export default {
           }
         }
       } catch (err) {
-        alert(err.response.data);
+        alert(err);
+      }
+    },
+    async getSalaryThisMonth() {
+      // this.month = "2022-01"
+
+      try {
+        const res = await axios({
+          method: "GET",
+          url: "http://localhost:3000/api/salary",
+          params: {
+            // month: parseInt(this.month.substring(5, 7)),
+            // year: parseInt(this.month.substring(0, 4)),
+            month: 1,
+            year: 2022
+          },
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+            // "x-auth-token": this.token,
+          },
+        });
+        if (res.data) {
+          this.isCalculateSalary = true
+          this.salaryUser = res.data;
+          if (this.$route.name === "Salary") {
+            alert(
+                "Thời gian làm việc nhân viên của tháng 1/2022 sẽ được hiển thị ở bảng dưới !!!"
+            );
+          }
+        }
+      } catch (err) {
+        alert(err);
       }
     },
   },
   computed: {
     usersFilter: function () {
-      if(this.salaryUser.length > 0) {
-        if(this.name) {
+      if (this.salaryUser.length > 0) {
+        if (this.name) {
           return this.salaryUser.filter(user => user.name.toLowerCase().includes(this.name.toLowerCase()))
         }
         return this.salaryUser

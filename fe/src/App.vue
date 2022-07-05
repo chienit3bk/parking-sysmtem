@@ -8,15 +8,12 @@
 
 export default {
   name: 'App',
-  components: {},
+  components: {
+  
+  },
 };
 </script>
 
 <style>
-html, body {
-  height: 100%;
-}
-#app {
-  height: 100%;
-}
+
 </style>

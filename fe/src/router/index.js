@@ -1,4 +1,3 @@
-
 import Vue from "vue";
 import VueRouter from "vue-router";
 
@@ -13,6 +12,13 @@ const routes = [
 
         component: () =>
             import ( /* webpackChunkName: "about" */ "../views/Home.vue"),
+    },
+    {
+        path: "/404",
+        name: "404Page",
+
+        component: () =>
+            import ( /* webpackChunkName: "about" */ "../views/404Page.vue"),
     },
     {
         path: "/login",

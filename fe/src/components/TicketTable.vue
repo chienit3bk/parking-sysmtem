@@ -64,20 +64,11 @@
                   <thead>
                     <tr>
                       <th>Ngày</th>
-                      <th>Số lượng vé ngày</th>
-                      <th>Số lượng vé tháng</th>
+                      <th>Số lượng xe vé ngày</th>
+                      <th>Số lượng xe vé tháng</th>
                       <th>Tổng số lượng xe</th>
                     </tr>
                   </thead>
-                  <!--                  <tfoot>-->
-                  <!--                  <tr>-->
-
-                  <!--                    <th>Ngày</th>-->
-                  <!--                    <th>Số lượng vé ngày</th>-->
-                  <!--                    <th>Số lượng vé tháng</th>-->
-                  <!--                    <th>Tổng số lượng xe</th>-->
-                  <!--                  </tr>-->
-                  <!--                  </tfoot>-->
                   <tbody>
                     <tr>
                       <td>{{ date }}</td>
@@ -152,7 +143,7 @@ export default {
           }
         }
       } catch (err) {
-        alert(err.response.data);
+        alert(err);
       }
     },
     async getStatisticByMonth() {
@@ -182,7 +173,7 @@ export default {
           }
         }
       } catch (err) {
-        alert(err.response.data);
+        alert(err);
       }
     },
   },

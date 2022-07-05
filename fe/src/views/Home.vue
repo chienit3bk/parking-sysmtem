@@ -36,7 +36,7 @@ export default {
     }),
   },
   methods: {
-    ...mapActions('ticket', ['getALlTickets']),
+    ...mapActions('ticket', ['getAllTickets']),
     isNotHaveToken: function () {
       if (this.token === "") {
         this.$router.push({name: "Login"})
@@ -45,7 +45,7 @@ export default {
   },
   mounted() {
     this.isNotHaveToken()
-    this.getALlTickets(this.token)
+    this.getAllTickets(this.token)
   }
 }
 </script>
